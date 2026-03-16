@@ -43,7 +43,7 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
     <div className="min-h-dvh bg-background">
       {/* Header */}
       <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-4 sm:px-6">
+        <div className="flex h-14 items-center gap-3 px-4 sm:px-6">
           {selected && (
             <button
               onClick={() => setSelected(null)}
@@ -64,15 +64,15 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
       </header>
 
       {/* Main content */}
-      <main className="mx-auto max-w-6xl">
+      <main>
         <div className="flex min-h-[calc(100dvh-3.5rem)]">
           {/* Sidebar: always visible on desktop, hidden on mobile when detail is open */}
           <div
-            className={`shrink-0 border-r md:block md:w-80 lg:w-96 ${
-              selected ? "hidden w-full md:block" : "w-full md:w-80 lg:w-96"
+            className={`shrink-0 border-r md:block md:w-64 ${
+              selected ? "hidden w-full md:block" : "w-full md:w-64"
             }`}
           >
-            <div className="sticky top-14 h-[calc(100dvh-3.5rem)] overflow-y-auto">
+            <div className="sticky top-14 h-[calc(100dvh-3.5rem)] overflow-y-auto no-scrollbar">
               <div className="p-4">
                 <FrequentChips
                   key={key}
@@ -97,6 +97,7 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
             {selected ? (
               <div className="flex h-full flex-col">
                 <div className="border-b px-6 py-5">
+                  <div className="mx-auto max-w-2xl">
                   <h2 className="text-lg font-semibold tracking-tight">
                     {selected.name}
                   </h2>
@@ -106,6 +107,7 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
                       {selected.variables.length !== 1 ? "s" : ""} to fill in
                     </p>
                   )}
+                  </div>
                 </div>
                 <PromptDetail prompt={selected} onCopied={refreshSort} />
               </div>

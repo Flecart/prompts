@@ -28,7 +28,7 @@ export function PromptDetail({
   return (
     <div className="flex h-full flex-col">
       <div className="flex-1 overflow-y-auto">
-        <div className="space-y-6 p-6">
+        <div className="mx-auto max-w-2xl space-y-6 p-6">
           {prompt.variables.length > 0 && (
             <VariableForm
               variables={prompt.variables}
@@ -72,8 +72,10 @@ export function PromptDetail({
       </div>
 
       <div className="sticky bottom-0 border-t bg-background/80 p-4 backdrop-blur-sm">
-        <CopyButton text={filled} promptName={prompt.name} onCopied={onCopied} />
-      </div>
+        <div className="mx-auto max-w-2xl">
+          <CopyButton text={filled} promptName={prompt.name} onCopied={onCopied} />
+        </div>
+        </div>
     </div>
   )
 }

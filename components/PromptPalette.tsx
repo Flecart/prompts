@@ -25,7 +25,7 @@ export function PromptPalette({
       <div className="px-4 pb-3">
         <CommandInput placeholder="Search prompts…" />
       </div>
-      <CommandList className="max-h-[calc(100dvh-14rem)] px-2">
+      <CommandList className="max-h-none px-2">
         <CommandEmpty>
           <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
             <FileTextIcon className="h-8 w-8 opacity-40" aria-hidden="true" />
