@@ -7,10 +7,12 @@ export function VariableForm({
   variables,
   values,
   onChange,
+  onLastInputTab,
 }: {
   variables: string[]
   values: Record<string, string>
   onChange: (values: Record<string, string>) => void
+  onLastInputTab?: () => void
 }) {
   if (variables.length === 0) return null
 
@@ -21,7 +23,7 @@ export function VariableForm({
         Variables
       </div>
       <div className="space-y-3">
-        {variables.map((v) => (
+        {variables.map((v, i) => (
           <div key={v} className="space-y-1.5">
             <label
               htmlFor={`var-${v}`}
@@ -35,6 +37,16 @@ export function VariableForm({
               placeholder={`Enter ${v.toLowerCase()}…`}
               value={values[v] || ""}
               onChange={(e) => onChange({ ...values, [v]: e.target.value })}
+              onKeyDown={
+                i === variables.length - 1 && onLastInputTab
+                  ? (e) => {
+                      if (e.key === "Tab" && !e.shiftKey) {
+                        e.preventDefault()
+                        onLastInputTab()
+                      }
+                    }
+                  : undefined
+              }
               autoComplete="off"
               spellCheck={false}
               className="transition-colors"

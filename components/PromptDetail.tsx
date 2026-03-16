@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { type Prompt } from "@/lib/types"
 import { fillPrompt } from "@/lib/variables"
 import { VariableForm } from "./VariableForm"
@@ -16,11 +16,25 @@ export function PromptDetail({
 }) {
   const [values, setValues] = useState<Record<string, string>>({})
   const [previewOpen, setPreviewOpen] = useState(true)
+  const copyButtonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     setValues({})
     setPreviewOpen(true)
   }, [prompt.name])
+
+  // Ctrl+K copies when a prompt is open
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault()
+        e.stopPropagation()
+        copyButtonRef.current?.click()
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown, true)
+    return () => document.removeEventListener("keydown", handleKeyDown, true)
+  }, [])
 
   const filled = fillPrompt(prompt.content, values)
   const hasValues = Object.values(values).some((v) => v.trim())
@@ -34,12 +48,14 @@ export function PromptDetail({
               variables={prompt.variables}
               values={values}
               onChange={setValues}
+              onLastInputTab={() => copyButtonRef.current?.focus()}
             />
           )}
 
           <div className="space-y-3">
             <button
               onClick={() => setPreviewOpen(!previewOpen)}
+              tabIndex={-1}
               className="flex w-full items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring rounded-md"
               aria-expanded={previewOpen}
             >
@@ -73,9 +89,14 @@ export function PromptDetail({
 
       <div className="sticky bottom-0 border-t bg-background/80 p-4 backdrop-blur-sm">
         <div className="mx-auto max-w-2xl">
-          <CopyButton text={filled} promptName={prompt.name} onCopied={onCopied} />
+          <CopyButton
+            ref={copyButtonRef}
+            text={filled}
+            promptName={prompt.name}
+            onCopied={onCopied}
+          />
         </div>
-        </div>
+      </div>
     </div>
   )
 }

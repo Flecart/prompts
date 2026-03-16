@@ -1,20 +1,15 @@
 "use client"
 
-import { useState } from "react"
+import { useState, forwardRef } from "react"
 import { Button } from "@/components/ui/button"
 import { ClipboardIcon, CheckIcon } from "lucide-react"
 import { toast } from "sonner"
 import { recordUsage } from "@/lib/usage"
 
-export function CopyButton({
-  text,
-  promptName,
-  onCopied,
-}: {
-  text: string
-  promptName: string
-  onCopied?: () => void
-}) {
+export const CopyButton = forwardRef<
+  HTMLButtonElement,
+  { text: string; promptName: string; onCopied?: () => void }
+>(function CopyButton({ text, promptName, onCopied }, ref) {
   const [copied, setCopied] = useState(false)
 
   async function handleCopy() {
@@ -28,6 +23,7 @@ export function CopyButton({
 
   return (
     <Button
+      ref={ref}
       onClick={handleCopy}
       size="lg"
       className="w-full transition-all active:scale-[0.98]"
@@ -46,4 +42,4 @@ export function CopyButton({
       )}
     </Button>
   )
-}
+})

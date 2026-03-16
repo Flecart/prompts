@@ -24,7 +24,8 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      // Ctrl+K focuses search only when no prompt is open (PromptDetail handles it otherwise)
+      if ((e.metaKey || e.ctrlKey) && e.key === "k" && !selected) {
         e.preventDefault()
         const input = document.querySelector<HTMLInputElement>(
           '[data-slot="command-input"]'
