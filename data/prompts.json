@@ -1,0 +1,80 @@
+{
+  "prompts": [
+    {
+      "name": "Paper Summarizer",
+      "content": "Please provide a comprehensive summary of the following research paper. Include:\n1. Main research question/objective\n2. Methodology used\n3. Key findings\n4. Implications and limitations\n5. How it relates to the broader field\n\nPaper: [Paper title or content]",
+      "variables": ["Paper title or content"]
+    },
+    {
+      "name": "Grant Funder Explorer",
+      "content": "Can you do a deep analysis of [Funder website / name] and provide:\n1. Their funding priorities and focus areas\n2. Typical grant sizes and duration\n3. Eligibility requirements\n4. Application deadlines and cycles\n5. Success rate if available\n6. Tips for a strong application",
+      "variables": ["Funder website / name"]
+    },
+    {
+      "name": "Code Reviewer",
+      "content": "Review the following code for:\n1. Bugs and potential issues\n2. Performance improvements\n3. Security vulnerabilities\n4. Code style and best practices\n5. Suggestions for refactoring\n\nLanguage: [Programming language]\nCode:\n```\n[Code to review]\n```",
+      "variables": ["Programming language", "Code to review"]
+    },
+    {
+      "name": "Market Research Analyst",
+      "content": "Conduct a market research analysis for [Product or service] in the [Target market] sector. Include:\n1. Market size and growth trends\n2. Key competitors and their positioning\n3. Target audience demographics\n4. SWOT analysis\n5. Recommended go-to-market strategy",
+      "variables": ["Product or service", "Target market"]
+    },
+    {
+      "name": "Email Drafter",
+      "content": "Draft a professional email with the following details:\n- Recipient: [Recipient name and role]\n- Purpose: [Email purpose]\n- Tone: [Formal/Casual/Friendly]\n- Key points to include: [Key points]\n\nPlease provide a subject line and the email body.",
+      "variables": ["Recipient name and role", "Email purpose", "Formal/Casual/Friendly", "Key points"]
+    },
+    {
+      "name": "Learning Plan Creator",
+      "content": "Create a structured learning plan for [Topic or skill] over [Time period]. Include:\n1. Prerequisites and foundational knowledge needed\n2. Week-by-week breakdown of topics\n3. Recommended resources (books, courses, tutorials)\n4. Practice exercises and projects\n5. Milestones and assessment criteria",
+      "variables": ["Topic or skill", "Time period"]
+    },
+    {
+      "name": "Data Analysis Helper",
+      "content": "I have a dataset about [Dataset description]. Help me:\n1. Identify the most relevant analyses to run\n2. Suggest appropriate statistical tests\n3. Recommend visualization approaches\n4. Interpret the following results: [Results to interpret]\n5. Identify potential biases or limitations",
+      "variables": ["Dataset description", "Results to interpret"]
+    },
+    {
+      "name": "Meeting Agenda Builder",
+      "content": "Create a structured meeting agenda for:\n- Meeting topic: [Meeting topic]\n- Duration: [Meeting duration]\n- Attendees: [List of attendees and roles]\n- Goals: [Meeting goals]\n\nInclude time allocations, discussion points, and action items template.",
+      "variables": ["Meeting topic", "Meeting duration", "List of attendees and roles", "Meeting goals"]
+    },
+    {
+      "name": "Writing Style Adapter",
+      "content": "Rewrite the following text in [Target style] style while preserving the core message:\n\nOriginal text:\n[Text to rewrite]\n\nAdditional instructions: [Any specific requirements]",
+      "variables": ["Target style", "Text to rewrite", "Any specific requirements"]
+    },
+    {
+      "name": "Debate Prep Assistant",
+      "content": "Help me prepare arguments for a debate on [Debate topic]. I am arguing [For/Against]. Provide:\n1. Three strongest arguments for my position\n2. Anticipated counterarguments and rebuttals\n3. Key evidence and statistics to cite\n4. Opening and closing statement drafts\n5. Potential weaknesses in my position to address",
+      "variables": ["Debate topic", "For/Against"]
+    },
+    {
+      "name": "API Documentation Writer",
+      "content": "Write API documentation for the following endpoint:\n- Endpoint: [API endpoint]\n- Method: [HTTP method]\n- Description: [What it does]\n\nInclude request/response examples, error codes, authentication requirements, and rate limits.",
+      "variables": ["API endpoint", "HTTP method", "What it does"]
+    },
+    {
+      "name": "Interview Question Generator",
+      "content": "Generate interview questions for a [Job title] position at [Company type]. Include:\n1. Technical/skill-based questions (5)\n2. Behavioral questions using STAR format (5)\n3. Culture fit questions (3)\n4. Questions the candidate should ask (3)\n5. Evaluation rubric for each question",
+      "variables": ["Job title", "Company type"]
+    },
+    {
+      "name": "Bug Report Analyzer",
+      "content": "Analyze this bug report and help me debug:\n- Error message: [Error message]\n- Expected behavior: [Expected behavior]\n- Actual behavior: [Actual behavior]\n- Steps to reproduce: [Steps]\n- Environment: [OS/Browser/Version]\n\nProvide potential causes ranked by likelihood and debugging steps.",
+      "variables": ["Error message", "Expected behavior", "Actual behavior", "Steps", "OS/Browser/Version"]
+    },
+    {
+      "name": "Content Calendar Planner",
+      "content": "Create a [Time period] content calendar for [Platform or channel] focused on [Topic/niche]. Include:\n1. Posting schedule and frequency\n2. Content themes for each week\n3. Specific post ideas with hooks\n4. Hashtag strategy\n5. Engagement tactics and CTAs",
+      "variables": ["Time period", "Platform or channel", "Topic/niche"]
+    },
+    {
+      "name": "System Design Architect",
+      "content": "Design a system architecture for [System description] that needs to handle [Scale requirements]. Cover:\n1. High-level architecture diagram (describe components)\n2. Database schema design\n3. API design\n4. Scalability considerations\n5. Security measures\n6. Technology stack recommendations",
+      "variables": ["System description", "Scale requirements"]
+    }
+  ],
+  "generatedAt": "2026-03-16T00:00:00.000Z"
+}
