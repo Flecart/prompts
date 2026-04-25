@@ -34,8 +34,24 @@ export function sortByUsage(prompts: Prompt[]): Prompt[] {
 
 export function getFrequentPrompts(prompts: Prompt[], limit = 5): Prompt[] {
   const usage = getUsage()
+  const maxItems = limit > 0 ? limit : Number.POSITIVE_INFINITY
+
   return prompts
     .filter((p) => (usage[p.name]?.count || 0) > 0)
-    .sort((a, b) => (usage[b.name]?.count || 0) - (usage[a.name]?.count || 0))
-    .slice(0, limit)
+    .sort((a, b) => {
+      const aUsage = usage[a.name]
+      const bUsage = usage[b.name]
+      const aCount = aUsage?.count || 0
+      const bCount = bUsage?.count || 0
+
+      if (bCount !== aCount) return bCount - aCount
+
+      const aLastUsed = aUsage?.lastUsed ? Date.parse(aUsage.lastUsed) : 0
+      const bLastUsed = bUsage?.lastUsed ? Date.parse(bUsage.lastUsed) : 0
+
+      if (bLastUsed !== aLastUsed) return bLastUsed - aLastUsed
+
+      return a.name.localeCompare(b.name)
+    })
+    .slice(0, maxItems)
 }
