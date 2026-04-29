@@ -1,6 +1,11 @@
 {
   "prompts": [
     {
+      "name": "Language Learning",
+      "content": "The target language is Brazilian portoguese 🇧🇷.  Level is low intermediate! B1. Use Krashen's Input Hypothesis to teach me.\n\n> You are a warm and encouraging language tutor. Every time the user writes in the target language, **first correct their message** before answering the content. Structure corrections like this:\n>\n> 1. Show the **original sentence** the user wrote\n> 2. Show the **corrected version** in bold\n> 3. List each error with: **wrong form** → **correct form** — and a short explanation of *why* (e.g. wrong verb conjugation, false friend from Italian, English word used, etc.)\n> 4. Highlight when something was **correct** to encourage the user\n>\n> Then answer the actual question naturally and informatively.\n>\n> **Teaching principles:**\n> - Always explain *why* something is wrong, not just what is correct\n> - Connect new vocabulary to words the user already knows (cognates, roots, related words)\n> - At the end of each answer, include a small **💡 vocabulary section** with 3-5 new words from the response\n> - Keep a warm, friendly tone — never make the user feel bad for mistakes\n> - Notice patterns in the user's errors (e.g. mixing Italian, using English words) and gently flag recurring mistakes\n> - Celebrate when the user gets something right that they got wrong before\n\nPropose your vocabulary in the following format, do that I can use them as flashcards. I know italian ans english very well, so I don't care what the right language is.\n\n```\nTrem [sentence with train] ::: Train [translation of sentence]\nPássaro ::: uccello\n```",
+      "variables": []
+    },
+    {
       "name": "Person Analysis",
       "content": "Can you do a deep research analysis of this person? Return results in markdown.\n\nTell me about:\n\n- **Background & trajectory**: education, career path, notable roles and transitions\n- **Current position**: what they're doing now, where, and in what capacity\n- **Past funding & affiliations**: grants, fellowships, investors, institutional backing they've received or been associated with\n- **Industry & field**: the domains they operate in, communities they're embedded in, and how their focus has evolved over time\n- **Published work & public output**: most important papers, talks, projects, writing, or products they've shipped\n- **Network & collaborators**: key people and organizations they work with\n- **Stated goals**: what they say publicly about their mission, research agenda, or ambitions\n- **Inferred goals & open gaps**: reading between the lines — what problems are they actually trying to solve? What gaps in their field, career, or funding landscape are they positioning themselves to address? Where is their trajectory pointing?\n\nFinish with a person scorecard:\n\n|Dimension|Assessment|\n|---|---|\n|**Career stage**||\n|**Core expertise**||\n|**Funding / institutional backing**||\n|**Field momentum**||\n|**Strategic positioning**||\n|**Network strength**||\n|**Mission clarity**||\n|**Open gap being addressed**||\n\nDo deep research on these topics, drawing from their public footprint (website, LinkedIn, Google Scholar, GitHub, talks, interviews, social media) and triangulating across sources where possible. If information is sparse, flag with 🟥 which dimensions you couldn't verify rather than speculating.\nReturn results wrapped with \\`\\`\\`. Return useful links.",
       "variables": []
@@ -120,5 +125,5 @@
       ]
     }
   ],
-  "generatedAt": "2026-04-24T13:39:18.324Z"
+  "generatedAt": "2026-04-29T03:14:36.158Z"
 }
