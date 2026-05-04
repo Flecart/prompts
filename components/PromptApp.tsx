@@ -10,16 +10,28 @@ import {
 import { PromptPalette } from "./PromptPalette"
 import { PromptDetail } from "./PromptDetail"
 import { FrequentChips } from "./FrequentChips"
-import { ArrowLeftIcon, Link2Icon, SparklesIcon } from "lucide-react"
+import {
+  ArrowLeftIcon,
+  CheckIcon,
+  CopyIcon,
+  Link2Icon,
+  SparklesIcon,
+} from "lucide-react"
+import { toast } from "sonner"
 
 export function PromptApp({ prompts }: { prompts: Prompt[] }) {
   const [selected, setSelected] = useState<Prompt | null>(null)
   const [sorted, setSorted] = useState<Prompt[]>(prompts)
   const [key, setKey] = useState(0)
+  const [linkCopied, setLinkCopied] = useState(false)
 
   useEffect(() => {
     setSorted(sortByUsage(prompts))
   }, [prompts])
+
+  useEffect(() => {
+    setLinkCopied(false)
+  }, [selected?.name])
 
   const syncHashToPrompt = useCallback((prompt: Prompt | null) => {
     if (typeof window === "undefined") return
@@ -88,6 +100,15 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
     ? promptNameToFragmentId(selected.name)
     : ""
 
+  const copyRelativePromptLink = useCallback(async () => {
+    if (!selectedFragmentId || typeof window === "undefined") return
+    const rel = `${window.location.pathname}${window.location.search}#${selectedFragmentId}`
+    await navigator.clipboard.writeText(rel)
+    toast.success("Copied link")
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
+  }, [selectedFragmentId])
+
   return (
     <div className="min-h-dvh bg-background">
       {/* Header */}
@@ -155,14 +176,36 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
                       {selected.name}
                     </h2>
                     {selectedFragmentId ? (
-                      <a
-                        href={`#${selectedFragmentId}`}
-                        className="mt-0.5 shrink-0 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                        title="Fragment link to this prompt"
-                        aria-label="Fragment link to this prompt"
-                      >
-                        <Link2Icon className="h-4 w-4" aria-hidden="true" />
-                      </a>
+                      <div className="mt-0.5 flex shrink-0 items-center gap-0.5">
+                        <button
+                          type="button"
+                          onClick={() => void copyRelativePromptLink()}
+                          className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          title="Copy relative link to this prompt"
+                          aria-label={
+                            linkCopied
+                              ? "Link copied"
+                              : "Copy relative link to this prompt"
+                          }
+                        >
+                          {linkCopied ? (
+                            <CheckIcon
+                              className="h-4 w-4 text-green-600 dark:text-green-500"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            <CopyIcon className="h-4 w-4" aria-hidden="true" />
+                          )}
+                        </button>
+                        <a
+                          href={`#${selectedFragmentId}`}
+                          className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          title="Fragment link to this prompt"
+                          aria-label="Fragment link to this prompt"
+                        >
+                          <Link2Icon className="h-4 w-4" aria-hidden="true" />
+                        </a>
+                      </div>
                     ) : null}
                   </div>
                   {selected.variables.length > 0 && (
