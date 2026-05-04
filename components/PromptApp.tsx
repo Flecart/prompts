@@ -3,10 +3,14 @@
 import { useState, useEffect, useCallback } from "react"
 import { type Prompt } from "@/lib/types"
 import { sortByUsage } from "@/lib/usage"
+import {
+  findPromptByFragmentId,
+  promptNameToFragmentId,
+} from "@/lib/promptSlug"
 import { PromptPalette } from "./PromptPalette"
 import { PromptDetail } from "./PromptDetail"
 import { FrequentChips } from "./FrequentChips"
-import { ArrowLeftIcon, SparklesIcon } from "lucide-react"
+import { ArrowLeftIcon, Link2Icon, SparklesIcon } from "lucide-react"
 
 export function PromptApp({ prompts }: { prompts: Prompt[] }) {
   const [selected, setSelected] = useState<Prompt | null>(null)
@@ -15,6 +19,46 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
 
   useEffect(() => {
     setSorted(sortByUsage(prompts))
+  }, [prompts])
+
+  const syncHashToPrompt = useCallback((prompt: Prompt | null) => {
+    if (typeof window === "undefined") return
+    const path = window.location.pathname || "/"
+    if (!prompt) {
+      window.history.replaceState(null, "", path)
+      return
+    }
+    const id = promptNameToFragmentId(prompt.name)
+    if (!id) return
+    window.history.replaceState(null, "", `${path}#${id}`)
+  }, [])
+
+  const selectPrompt = useCallback(
+    (prompt: Prompt | null) => {
+      setSelected(prompt)
+      syncHashToPrompt(prompt)
+    },
+    [syncHashToPrompt]
+  )
+
+  useEffect(() => {
+    function syncSelectionFromHash() {
+      const raw = window.location.hash.slice(1).trim()
+      if (!raw) {
+        setSelected(null)
+        return
+      }
+      const match = findPromptByFragmentId(prompts, raw)
+      if (match) setSelected(match)
+    }
+
+    syncSelectionFromHash()
+
+    function onHashChange() {
+      syncSelectionFromHash()
+    }
+    window.addEventListener("hashchange", onHashChange)
+    return () => window.removeEventListener("hashchange", onHashChange)
   }, [prompts])
 
   const refreshSort = useCallback(() => {
@@ -33,12 +77,16 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
         input?.focus()
       }
       if (e.key === "Escape" && selected) {
-        setSelected(null)
+        selectPrompt(null)
       }
     }
     document.addEventListener("keydown", handleKeyDown)
     return () => document.removeEventListener("keydown", handleKeyDown)
-  }, [selected])
+  }, [selected, selectPrompt])
+
+  const selectedFragmentId = selected
+    ? promptNameToFragmentId(selected.name)
+    : ""
 
   return (
     <div className="min-h-dvh bg-background">
@@ -47,7 +95,7 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
         <div className="flex h-14 items-center gap-3 px-4 sm:px-6">
           {selected && (
             <button
-              onClick={() => setSelected(null)}
+              onClick={() => selectPrompt(null)}
               className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-md md:hidden"
               aria-label="Back to prompt list"
             >
@@ -78,13 +126,13 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
                 <FrequentChips
                   key={key}
                   prompts={prompts}
-                  onSelect={setSelected}
+                  onSelect={selectPrompt}
                 />
               </div>
               <PromptPalette
                 prompts={sorted}
                 selected={selected}
-                onSelect={setSelected}
+                onSelect={selectPrompt}
               />
             </div>
           </div>
@@ -99,9 +147,24 @@ export function PromptApp({ prompts }: { prompts: Prompt[] }) {
               <div className="flex h-full flex-col">
                 <div className="border-b px-6 py-5">
                   <div className="mx-auto max-w-2xl">
-                  <h2 className="text-lg font-semibold tracking-tight">
-                    {selected.name}
-                  </h2>
+                  <div className="flex items-start gap-2">
+                    <h2
+                      id={selectedFragmentId || undefined}
+                      className="min-w-0 flex-1 text-lg font-semibold tracking-tight"
+                    >
+                      {selected.name}
+                    </h2>
+                    {selectedFragmentId ? (
+                      <a
+                        href={`#${selectedFragmentId}`}
+                        className="mt-0.5 shrink-0 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        title="Fragment link to this prompt"
+                        aria-label="Fragment link to this prompt"
+                      >
+                        <Link2Icon className="h-4 w-4" aria-hidden="true" />
+                      </a>
+                    ) : null}
+                  </div>
                   {selected.variables.length > 0 && (
                     <p className="mt-1 text-sm text-muted-foreground">
                       {selected.variables.length} variable
